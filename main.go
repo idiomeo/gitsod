@@ -1,3 +1,4 @@
+// main.go
 package main
 
 import (
@@ -13,8 +14,14 @@ import (
 
 const (
 	configFile = "config.json"
-	configURL  = "https://gitee.com/idiomeo/gitsod-config/raw/master/config.json"
+	firstFlag  = ".flag"
 )
+
+var configURLs = []string{
+	"https://gitee.com/idiomeo/gitsod-config/raw/master/config.json",
+	"https://codeberg.org/idiomeo/gitsod/raw/branch/master/config.json",
+	"https://gist.licnoc.top/idiomeo/9d352b13229846c3aefa17427d4600a5/raw/HEAD/config.json",
+}
 
 type Config struct {
 	ClonePrefix    string   `json:"clone_prefix"`
@@ -22,6 +29,17 @@ type Config struct {
 	MirrorSite     string   `json:"mirror_site"`
 }
 
+// ---------- 彩色打印 ----------
+var (
+	colorRed   = "\033[31m"
+	colorGreen = "\033[32m"
+	colorReset = "\033[0m"
+)
+
+func red(msg string)   { fmt.Println(colorRed + msg + colorReset) }
+func green(msg string) { fmt.Println(colorGreen + msg + colorReset) }
+
+// ---------- 命令行参数处理 ----------
 func main() {
 	if len(os.Args) == 1 {
 		openMirror()
@@ -29,28 +47,19 @@ func main() {
 	}
 
 	switch strings.ToLower(os.Args[1]) {
-	case "help":
-		help()
-	case "-h":
+	case "help", "-h":
 		help()
 	case "update":
 		updateConfig()
 	case "clone":
 		if len(os.Args) < 3 {
-			fmt.Println("用法: gitsod clone <Github文件的URL>")
+			red("用法: gitsod clone <GitHub仓库URL>")
 			return
 		}
 		gitClone(strings.Join(os.Args[2:], " "))
-	case "download":
+	case "download", "-d":
 		if len(os.Args) < 3 {
-			fmt.Println("用法: gitsod download <Github文件的URL>")
-			fmt.Println("(可以精简为 gitsod -d <Github文件的URL>)")
-			return
-		}
-		download(strings.Join(os.Args[2:], " "))
-	case "-d":
-		if len(os.Args) < 3 {
-			fmt.Println("用法: gitsod d <Github文件的URL>")
+			red("用法: gitsod download <GitHub文件URL>")
 			return
 		}
 		download(strings.Join(os.Args[2:], " "))
@@ -61,6 +70,7 @@ func main() {
 	}
 }
 
+// ---------- 加载配置 ----------
 func loadConfig() (*Config, error) {
 	data, err := os.ReadFile(configFile)
 	if err != nil {
@@ -73,62 +83,69 @@ func loadConfig() (*Config, error) {
 	return &cfg, nil
 }
 
+// ---------- 更新配置 ----------
 func updateConfig() {
 	if !commandExists("git") {
-		fmt.Println("本程序依赖于git，检测到系统未安装 git，请先安装 git 后再试。")
+		red("本程序依赖 git，请先安装 git 后再试。")
 		return
 	}
 
-	fmt.Println("正在拉取最新配置...")
-	resp, err := http.Get(configURL)
-	if err != nil || resp.StatusCode != 200 {
-		fmt.Println("拉取配置失败:", err)
-		return
+	for _, url := range configURLs {
+		green("尝试从 " + url + " 拉取配置...")
+		resp, err := http.Get(url)
+		if err == nil && resp.StatusCode == 200 {
+			defer resp.Body.Close()
+			out, err := os.Create(configFile)
+			if err != nil {
+				red("无法写入配置文件: " + err.Error())
+				return
+			}
+			defer out.Close()
+			if _, err := io.Copy(out, resp.Body); err != nil {
+				red("写入配置文件失败: " + err.Error())
+				return
+			}
+			green("已更新 config.json")
+			return
+		}
 	}
-	defer resp.Body.Close()
-
-	out, err := os.Create(configFile)
-	if err != nil {
-		fmt.Println("无法写入配置文件:", err)
-		return
-	}
-	defer out.Close()
-
-	if _, err := io.Copy(out, resp.Body); err != nil {
-		fmt.Println("写入配置文件失败:", err)
-		return
-	}
-	fmt.Println("已更新 config.json")
+	red("所有镜像源均拉取失败，请检查网络或稍后重试。")
 }
 
+// ---------- 克隆 ----------
 func gitClone(rawURL string) {
 	cfg, err := loadConfig()
 	if err != nil {
-		fmt.Println(err)
+		red(err.Error())
 		return
 	}
 	if !strings.HasPrefix(rawURL, "http") {
 		rawURL = "https://" + rawURL
 	}
 	target := cfg.ClonePrefix + strings.TrimPrefix(rawURL, "https://")
+
+	if _, err := os.Stat(firstFlag); os.IsNotExist(err) {
+		green("首次 clone 需从 GitHub 上缓存镜像地址，请稍等（以后克隆即可从缓存中直接拉取）")
+		_ = os.WriteFile(firstFlag, nil, 0644)
+	}
+
 	runCmd("git", "clone", target)
 }
 
+// ---------- 下载 ----------
 func download(rawURL string) {
 	cfg, err := loadConfig()
 	if err != nil {
-		fmt.Println(err)
+		red(err.Error())
 		return
 	}
 	if !strings.HasPrefix(rawURL, "http") {
 		rawURL = "https://" + rawURL
 	}
-	// 优先使用 ghfast.top
 	target := cfg.DownloadPrefix[0] + "/" + rawURL
 	if !commandExists("wget") && !commandExists("curl") {
-		fmt.Println("系统未检测到 wget 或 curl，请安装其中一个后再试。")
-		fmt.Print("你可以直接将以下URL复制进浏览器进行下载： ")
-		fmt.Println(target)
+		red("系统未检测到 wget 或 curl，请安装其中一个后再试。")
+		fmt.Println("可直接使用浏览器下载：", target)
 		return
 	}
 	if commandExists("wget") {
@@ -138,10 +155,11 @@ func download(rawURL string) {
 	}
 }
 
+// ---------- 打开镜像 ----------
 func openMirror() {
 	cfg, err := loadConfig()
 	if err != nil {
-		fmt.Println(err)
+		red(err.Error())
 		return
 	}
 	url := cfg.MirrorSite
@@ -157,12 +175,13 @@ func openMirror() {
 	}
 }
 
+// ---------- 执行外部命令 ----------
 func runCmd(name string, args ...string) {
 	cmd := exec.Command(name, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		fmt.Println("执行失败:", err)
+		red("执行失败: " + err.Error())
 	}
 }
 
@@ -171,9 +190,18 @@ func commandExists(cmd string) bool {
 	return err == nil
 }
 
+// ---------- 帮助 ----------
 func help() {
-
-	fmt.Println("以上为全部指令及其用法")
-	fmt.Println("更详细信息可以查看官网:gitsod.licnoc.top")
-
+	fmt.Println(strings.TrimSpace(`
+gitsod - GitHub 加速小工具
+用法:
+  gitsod                    打开镜像站
+  gitsod open               同上
+  gitsod clone <url>        从镜像克隆仓库
+  gitsod download <url>     从镜像下载文件
+  gitsod -d <url>           同上
+  gitsod update             更新配置文件
+  gitsod help | -h          显示此帮助
+官网: gitsod.licnoc.top
+`))
 }
