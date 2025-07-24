@@ -29,17 +29,28 @@ func main() {
 	}
 
 	switch strings.ToLower(os.Args[1]) {
+	case "help":
+		help()
+	case "-h":
+		help()
 	case "update":
 		updateConfig()
 	case "clone":
 		if len(os.Args) < 3 {
-			fmt.Println("用法: gitsod clone <github-repo-url>")
+			fmt.Println("用法: gitsod clone <Github文件的URL>")
 			return
 		}
 		gitClone(strings.Join(os.Args[2:], " "))
 	case "download":
 		if len(os.Args) < 3 {
-			fmt.Println("用法: gitsod download <github-file-url>")
+			fmt.Println("用法: gitsod download <Github文件的URL>")
+			fmt.Println("(可以精简为 gitsod -d <Github文件的URL>)")
+			return
+		}
+		download(strings.Join(os.Args[2:], " "))
+	case "-d":
+		if len(os.Args) < 3 {
+			fmt.Println("用法: gitsod d <Github文件的URL>")
 			return
 		}
 		download(strings.Join(os.Args[2:], " "))
@@ -64,7 +75,7 @@ func loadConfig() (*Config, error) {
 
 func updateConfig() {
 	if !commandExists("git") {
-		fmt.Println("检测到系统未安装 git，请先安装 git 后再试。")
+		fmt.Println("本程序依赖于git，检测到系统未安装 git，请先安装 git 后再试。")
 		return
 	}
 
@@ -116,7 +127,7 @@ func download(rawURL string) {
 	target := cfg.DownloadPrefix[0] + "/" + rawURL
 	if !commandExists("wget") && !commandExists("curl") {
 		fmt.Println("系统未检测到 wget 或 curl，请安装其中一个后再试。")
-		fmt.Println("已为您生成可直接复制下载的链接：")
+		fmt.Print("你可以直接将以下URL复制进浏览器进行下载： ")
 		fmt.Println(target)
 		return
 	}
@@ -158,4 +169,11 @@ func runCmd(name string, args ...string) {
 func commandExists(cmd string) bool {
 	_, err := exec.LookPath(cmd)
 	return err == nil
+}
+
+func help() {
+
+	fmt.Println("以上为全部指令及其用法")
+	fmt.Println("更详细信息可以查看官网:gitsod.licnoc.top")
+
 }

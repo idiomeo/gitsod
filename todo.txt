@@ -1,0 +1,4 @@
+1.为了追求稳定性，configURL的拉去地址不止一个，还可以从https://codeberg.org/idiomeo/gitsod/raw/branch/master/config.json，https://gist.licnoc.top/idiomeo/9d352b13229846c3aefa17427d4600a5/raw/HEAD/config.json拉取，以及原本的gitee源，优先从gitee拉取，其次是codeberg，最后是gist
+2.在首次使用clone时提醒用户“首次clone需从 github 上缓存镜像地址，请稍等（以后克隆即可从缓存中直接拉取） ”。（可以通过在同级目录下新建.flag以标记是否为第一次clone）
+3.完善help()函数
+4.给程序的输出增加色彩，报错用红色，成功用绿色，普通信息不上色
