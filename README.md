@@ -1,6 +1,9 @@
 # gitsod — GitHub 加速小工具
 
-> 一个帮你一键加速GitHub的**克隆、下载** 的命令行小工具(同时还能帮你打开Github镜像站的网址)。  
+> 一个帮你一键加速GitHub的**克隆、下载** 的命令行小工具(同时还能帮你打开Github镜像站的网址)。   
+
+[Gitee仓库地址](https://gitee.com/idiomeo/gitsod)  
+[Github仓库地址](https://github.com/idiomeo/gitsod)  
 
 ---
 
