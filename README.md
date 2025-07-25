@@ -6,7 +6,7 @@
 
 # 快速上手
 
-## 1. 一键安装gitsod
+## 1. 安装gitsod
 
   
 ### Linux
