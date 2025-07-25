@@ -16,9 +16,9 @@ import (
 const (
 	configFile   = "config.json"
 	firstFlag    = ".flag"
-	currentVer   = 1 // 每次发版时手动+1
-	versionURL   = "https://gitee.com/idiomeo/gitsod/raw/master/install/VERSION"
-	downloadBase = "https://gitea.licnoc.top/adm/gitsod/releases/latest/download"
+	currentVer   = 1                                                             // 每次发版时手动+1
+	versionURL   = "https://gitee.com/idiomeo/gitsod/raw/master/install/VERSION" //VERSION文件的远程地址，用于检测是否需要更新
+	downloadBase = "https://gitee.com/idiomeo/gitsod/tree/master/install"        //二进制文件的远程存储地址
 )
 
 var configURLs = []string{
@@ -153,6 +153,7 @@ func updateConfig() {
 		}
 	}
 	red("所有镜像源均失败，请检查网络")
+	red("若网络正常而镜像源均拉取失败，则联系开发者：idiomeo@foxmail.com")
 }
 
 // ---------- clone ----------

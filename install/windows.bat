@@ -2,8 +2,8 @@
 setlocal
 
 :: 下载地址
-set BASE_URL=https://gitea.licnoc.top/adm/gitsod/releases/latest/download
-set BIN_NAME=gitsod-windows-amd64.exe
+set BASE_URL=https://gitee.com/idiomeo/gitsod/raw/master/install/bin/
+set BIN_NAME=gitsod.exe
 set DOWNLOAD_URL=%BASE_URL%/%BIN_NAME%
 
 :: 安装目录

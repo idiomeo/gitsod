@@ -2,8 +2,8 @@
 set -e
 
 # 固定下载地址（仅 Linux x86-64）
-BASE_URL="https://gitea.licnoc.top/adm/gitsod/releases/latest/download"
-BIN_NAME="gitsod-linux-amd64"
+BASE_URL="https://gitee.com/idiomeo/gitsod/raw/master/install/bin/"
+BIN_NAME="gitsod"
 DOWNLOAD_URL="${BASE_URL}/${BIN_NAME}"
 
 # 安装目录
