@@ -1,27 +1,86 @@
 # gitsod — GitHub 加速小工具
 
-> 一个帮你一键加速GitHub的**克隆、下载** 的命令行小工具(同时还能帮你打开Github镜像地址)。  
+> 一个帮你一键加速GitHub的**克隆、下载** 的命令行小工具(同时还能帮你打开Github镜像站的网址)。  
 
 ---
 
 # 快速上手
 
 ## 1. 一键安装gitsod
-### Windows
-打开powershell，直接执行以下命令  
-```bash
-powershell -Command "iwr -useb https://gitee.com/idiomeo/gitsod/raw/master/install/windows.bat | iex"
-```
+
   
 ### Linux
 打开终端，直接执行以下命令  
 ```bash
-curl -fsSL https://gitee.com/idiomeo/gitsod/raw/master/install/linux.sh | bash
-```
+curl -fsSL https://gitee.com/idiomeo/gitsod/raw/master/install/linux.sh | bash  
+```  
+
+该命令将自动拉取**一键安装脚本**进行gitsod的安装  
+
+当脚本执行完毕，此时gitsod就已经被下载并添加为你的系统命令了。  
+你可以忽略下方的Windows安装过程，[跳转到下一步](##-2.-初始化)。  
+
+
+### Windows
+
+在Windows下，安装并不是很复杂，只是步骤有点多，跟着教程慢慢来。  
+
+#### 1. 下载gitsod
+前往**Release页面**下载`gitsod.exe`文件  
+
+![Release页面位置](./picture/where-is-release.png)  
+
+点击`gitsod.exe`进行下载  
+
+![exe文件位置](./picture/where-is-exe.png)  
+
+
+#### 2. 安置.exe文件
+在一个稳定的、非临时的位置**新建一个干净的目录**   
+
+这里是我创建的新目录，供各位参考  
+
+![](./picture/my-new-menu.png)  
+
+然后将刚刚下载到的`gitsod.exe`文件拖放到该目录  
+
+![](./picture/my-menu.png)  
+
+#### 3. 设置环境变量
+
+在Windows的全局搜索栏中搜索`环境变量` ，**弹出来的第一个**就是我们需要用的，打开它。 
+
+![](./picture/search-path.png)  
+
+
+然后在打开的窗口中点击`环境变量`  
+
+![](./picture/open-path.png)  
+
+ 
+然后在`系统变量`的集合中找到名为`Path`的条目，**双击**打开它  
+
+![](./picture/system-path.png)  
+
+
+在新打开的窗口中点击`新建`    
+![](./picture/new-path.png)    
+
+在弹出的新条目中粘贴或填入我们刚刚用于安置`gitsod.exe`的文件夹路径
+![](./picture/paste-path.png)    
+
+**不要直接关闭窗口!!!**，依次**点击确定按钮**以退出这些窗口。  
+
+---
+
+至此，安装结束，你可以开启你的powershell或者cmd使用`gitsod`命令了  
+
+但先别着急，接下来只需要一个命令将其初始化后才可以正式使用    
+
 
 
 ## 2. 初始化
-第一次使用 只需一步：
+第一次使用时，需要输入一条指令进行初始化：
 ``` bash
 # 拉取最新镜像配置（仅需一次）
 gitsod update

@@ -122,9 +122,10 @@ func updateConfig() {
 			var installer string
 			switch runtime.GOOS {
 			case "windows":
-				installer = downloadBase + "/install.bat"
-				exec.Command("powershell", "-Command",
-					"iwr -useb "+installer+" | iex").Run()
+				// installer = downloadBase + "/install.bat"
+				// exec.Command("powershell", "-Command",
+				// 	"iwr -useb "+installer+" | iex").Run()
+				fmt.Println("检测到gitsod有新版本，请前往https://gitee.com/idiomeo/gitsod下载最新版")
 			default:
 				installer = downloadBase + "/install.sh"
 				exec.Command("bash", "-c",
