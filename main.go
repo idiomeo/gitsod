@@ -162,14 +162,21 @@ func gitClone(raw string) {
 	if !strings.HasPrefix(url, "http") {
 		url = "https://" + url
 	}
-	cfg, _ := loadConfig()
+	cfg, err := loadConfig()
+	if err != nil {
+		red(err.Error())
+		return
+	}
 	target := cfg.ClonePrefix + strings.TrimPrefix(url, "https://")
 
 	if _, err := os.Stat(firstFlag); os.IsNotExist(err) {
 		green("首次 clone 需缓存镜像，请稍等…")
 		_ = os.WriteFile(firstFlag, nil, 0644)
 	}
-	_ = os.Chdir(targetDir)
+	if err := os.Chdir(targetDir); err != nil {
+		red("切换目录失败: " + err.Error())
+		return
+	}
 	runCmd("git", "clone", target)
 }
 
@@ -179,7 +186,11 @@ func download(raw string) {
 	if !strings.HasPrefix(url, "http") {
 		url = "https://" + url
 	}
-	cfg, _ := loadConfig()
+	cfg, err := loadConfig()
+	if err != nil {
+		red(err.Error())
+		return
+	}
 	target := cfg.DownloadPrefix[0] + "/" + url
 
 	if !commandExists("wget") && !commandExists("curl") {
@@ -187,7 +198,10 @@ func download(raw string) {
 		fmt.Println("可手动下载：", target)
 		return
 	}
-	_ = os.Chdir(targetDir)
+	if err := os.Chdir(targetDir); err != nil {
+		red("切换目录失败: " + err.Error())
+		return
+	}
 	if commandExists("wget") {
 		runCmd("wget", target)
 	} else {
@@ -197,7 +211,11 @@ func download(raw string) {
 
 // ---------- open ----------
 func openMirror() {
-	cfg, _ := loadConfig()
+	cfg, err := loadConfig()
+	if err != nil {
+		red(err.Error())
+		return
+	}
 	url := cfg.MirrorSite
 	switch runtime.GOOS {
 	case "windows":

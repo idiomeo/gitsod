@@ -11,3 +11,4 @@
 
 # 排除 install/bin/ 目录下的 .exe 文件
 !install/bin/*.exe
+*.flag
