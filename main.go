@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
@@ -122,9 +123,6 @@ func updateConfig() {
 			var installer string
 			switch runtime.GOOS {
 			case "windows":
-				// installer = downloadBase + "/install.bat"
-				// exec.Command("powershell", "-Command",
-				// 	"iwr -useb "+installer+" | iex").Run()
 				fmt.Println("检测到gitsod有新版本，请前往https://gitee.com/idiomeo/gitsod下载最新版")
 			default:
 				installer = downloadBase + "/install.sh"
@@ -141,15 +139,35 @@ func updateConfig() {
 		red("本程序依赖 git，请先安装 git")
 		return
 	}
+
+	// 取程序所在目录
+	exePath, err := os.Executable()
+	if err != nil {
+		red("无法获取程序路径: " + err.Error())
+		return
+	}
+	cfgPath := filepath.Join(filepath.Dir(exePath), configFile)
+
 	for _, url := range configURLs {
 		fmt.Println("尝试从 " + url + " 拉取配置…")
 		resp, err := http.Get(url)
 		if err == nil && resp.StatusCode == 200 {
 			defer resp.Body.Close()
-			out, _ := os.Create(configFile)
-			io.Copy(out, resp.Body)
-			out.Close()
-			green("已更新 config.json")
+
+			// 确保目录存在
+			_ = os.MkdirAll(filepath.Dir(cfgPath), 0755)
+
+			out, err := os.Create(cfgPath)
+			if err != nil {
+				red("创建配置文件失败: " + err.Error())
+				return
+			}
+			defer out.Close()
+			if _, err := io.Copy(out, resp.Body); err != nil {
+				red("写入配置文件失败: " + err.Error())
+				return
+			}
+			green("已更新 " + configFile)
 			return
 		}
 	}
