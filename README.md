@@ -1,15 +1,24 @@
 # gitsod — GitHub 加速小工具
 
-> 一个帮你无痛加速克隆、下载和访问 GitHub 的命令行小工具。
-
-![吸引人用的图片](./picture/attract.jpeg)
+> 一个帮你一键加速GitHub的**克隆、下载** 的命令行小工具(同时还能帮你打开Github镜像地址)。  
 
 ---
 
 # 快速上手
 
 ## 1. 一键安装gitsod
-通过安装脚本下载
+### Windows
+打开powershell，直接执行以下命令  
+```bash
+powershell -Command "iwr -useb https://gitee.com/idiomeo/gitsod/raw/master/install/windows.bat | iex"
+```
+  
+### Linux
+打开终端，直接执行以下命令  
+```bash
+curl -fsSL https://gitee.com/idiomeo/gitsod/raw/master/install/linux.sh | bash
+```
+
 
 ## 2. 初始化
 第一次使用 只需一步：
