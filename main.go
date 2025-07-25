@@ -98,13 +98,21 @@ func parsePath(raw string) (dir string, url string) {
 
 // ---------- 配置 ----------
 func loadConfig() (*Config, error) {
-	data, err := os.ReadFile(configFile)
+	// 取程序所在目录
+	exePath, err := os.Executable()
 	if err != nil {
-		return nil, fmt.Errorf("找不到 %s，请执行 gitsod update", configFile)
+		return nil, fmt.Errorf("无法获取程序路径: %v", err)
 	}
+	cfgPath := filepath.Join(filepath.Dir(exePath), configFile)
+
+	data, err := os.ReadFile(cfgPath)
+	if err != nil {
+		return nil, fmt.Errorf("找不到 %s，请执行 gitsod update", cfgPath)
+	}
+
 	var cfg Config
 	if err := json.Unmarshal(data, &cfg); err != nil {
-		return nil, fmt.Errorf("解析 %s 失败: %v", configFile, err)
+		return nil, fmt.Errorf("解析 %s 失败: %v", cfgPath, err)
 	}
 	return &cfg, nil
 }
