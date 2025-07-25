@@ -29,7 +29,7 @@ curl -fsSL https://gitee.com/idiomeo/gitsod/raw/master/install/linux.sh | bash
 
 
 ## 2. 初始化
-第一次使用时，需要输入一条指令进行初始化：
+第一次使用时，需要输入一条指令进行初始化:
 ``` bash
 # 拉取最新镜像配置（仅需一次）
 gitsod update
