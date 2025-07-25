@@ -17,6 +17,8 @@ echo "正在下载 $DOWNLOAD_URL ..."
 $SUDO curl -L -o "$TARGET" "$DOWNLOAD_URL"
 $SUDO chmod +x "$TARGET"
 
+gitsod update
+
 echo
 echo "===== 安装完成 ====="
 echo "已安装到 $TARGET"
