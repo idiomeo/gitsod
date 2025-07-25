@@ -20,7 +20,6 @@ const (
 var configURLs = []string{
 	"https://gitee.com/idiomeo/gitsod-config/raw/master/config.json",
 	"https://codeberg.org/idiomeo/gitsod/raw/branch/master/config.json",
-	"https://gist.licnoc.top/idiomeo/9d352b13229846c3aefa17427d4600a5/raw/HEAD/config.json",
 }
 
 type Config struct {
@@ -74,7 +73,7 @@ func main() {
 func loadConfig() (*Config, error) {
 	data, err := os.ReadFile(configFile)
 	if err != nil {
-		return nil, fmt.Errorf("找不到 %s，请先执行 gitsod update 拉取配置", configFile)
+		return nil, fmt.Errorf("找不到 %s，请执行 gitsod update 拉取配置文件", configFile)
 	}
 	var cfg Config
 	if err := json.Unmarshal(data, &cfg); err != nil {
@@ -91,7 +90,7 @@ func updateConfig() {
 	}
 
 	for _, url := range configURLs {
-		green("尝试从 " + url + " 拉取配置...")
+		fmt.Println("尝试从 " + url + " 拉取配置...")
 		resp, err := http.Get(url)
 		if err == nil && resp.StatusCode == 200 {
 			defer resp.Body.Close()
@@ -202,6 +201,6 @@ gitsod - GitHub 加速小工具
   gitsod -d <url>           同上
   gitsod update             更新配置文件
   gitsod help | -h          显示此帮助
-官网: gitsod.licnoc.top
+
 `))
 }
