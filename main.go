@@ -194,7 +194,9 @@ func gitClone(raw string) {
 		red(err.Error())
 		return
 	}
-	target := cfg.ClonePrefix + strings.TrimPrefix(url, "https://")
+
+	clonePrefix := strings.TrimRight(cfg.ClonePrefix, "/")
+	target := clonePrefix + "/" + strings.TrimPrefix(url, "https://")
 
 	if _, err := os.Stat(firstFlag); os.IsNotExist(err) {
 		green("首次 clone 需缓存镜像，请稍等…")
