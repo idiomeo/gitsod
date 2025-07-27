@@ -3,9 +3,11 @@
            UpgradeCode="{7E1C4E9F-3F8A-4D45-9D8B-2C5A9D3F1B2A}">
     
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate />
 
-    <StandardDirectory Id="ProgramFilesFolder">
+    <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
+
+    <!-- 修改：使用 LocalAppDataFolder 替代 ProgramFilesFolder -->
+    <StandardDirectory Id="LocalAppDataFolder">
       <Directory Name="Gitsod" Id="INSTALLDIR">
         
         <Component Id="GitsodEXE" Guid="{F4C2D5A1-8B3E-4F9B-9E1A-2C3D4F5A6B7C}">
@@ -13,7 +15,7 @@
         </Component>
 
         <Component Id="EnvPath" Guid="{A1B2C3D4-5E6F-7890-ABCD-1234567890EF}">
-          <Environment Id="AddToPath" Name="PATH" Value="[INSTALLDIR]" Part="last" Action="set" System="yes" />
+          <Environment Id="AddToPath" Name="PATH" Value="[INSTALLDIR]" Part="last" Action="set" System="no" />
         </Component>
 
       </Directory>

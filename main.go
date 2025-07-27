@@ -20,7 +20,7 @@ const (
 	firstFlag  = ".flag"
 
 	//程序版本，每次调用build.bat后会自动通过version-build.sh修改。
-	currentVer float64 = 1.3
+	currentVer float64 = 2.1
 
 	versionURL   = "https://gitee.com/idiomeo/gitsod/raw/master/install/VERSION" //VERSION文件的远程地址，用于检测是否需要更新
 	downloadBase = "https://gitee.com/idiomeo/gitsod/tree/master/install"        //二进制文件的远程存储地址
