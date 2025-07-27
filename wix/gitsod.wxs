@@ -1,0 +1,29 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Gitsod" Version="1.3" Manufacturer="YourName"
+           UpgradeCode="{7E1C4E9F-3F8A-4D45-9D8B-2C5A9D3F1B2A}">
+    
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFilesFolder">
+      <Directory Name="Gitsod" Id="INSTALLDIR">
+        
+        <Component Id="GitsodEXE" Guid="{F4C2D5A1-8B3E-4F9B-9E1A-2C3D4F5A6B7C}">
+          <File Id="gitsod.exe" Source="..\gitsod.exe" KeyPath="yes" />
+        </Component>
+
+        <Component Id="EnvPath" Guid="{A1B2C3D4-5E6F-7890-ABCD-1234567890EF}">
+          <Environment Id="AddToPath" Name="PATH" Value="[INSTALLDIR]" Part="last" Action="set" System="yes" />
+        </Component>
+
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="MainFeature">
+      <ComponentRef Id="GitsodEXE" />
+      <ComponentRef Id="EnvPath" />
+    </Feature>
+
+  </Package>
+</Wix>

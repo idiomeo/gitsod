@@ -1,14 +1,28 @@
+# 测试
 *.exe
 *.exe~
 *.msi
 *.dll
 *.so
 *.dylib
+*.flag
 
 *.test
 
 *.out
 
+gitsod
+
+
+# Windows下安装程序gitsod.msi的生成
+*.wixobj
+*.wixpdb
+*.cab
+
+
+# 发布
 # 排除 install/bin/ 目录下的 .exe 文件
 !install/bin/*.exe
-*.flag
+!install/bin/gitsod
+!install/bin/*.msi
+
