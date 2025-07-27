@@ -2,6 +2,18 @@
 
 > 一个帮你一键加速GitHub的**克隆、下载** 的命令行小工具(同时还能帮你打开Github镜像站的网址)。   
 
+优势：  
+- 学习成本极低，只需要记住2个命令即可满足GitHub的所有下载加速需求  
+- 安装极其简单，Windows下有安装包，Linux下有一键安装命令     
+
+
+---
+效果演示：  
+
+![克隆演示](./picture/clone-show.png)  
+
+![下载演示](./picture/download-show.png)  
+
 [Gitee仓库地址](https://gitee.com/idiomeo/gitsod)  (所有的Release文件都在Gitee仓库中发布)  
 [Github仓库地址](https://github.com/idiomeo/gitsod)  
 
@@ -9,23 +21,32 @@
 
 # 快速上手
 
+如果你是第一次接触`gitsod`，你需要按照以下3个步骤来安装并学会使用gitsod
+
 ## 1. 安装gitsod
 
+### Windows  
+
+在Windows下，安装非常简单，你只需要前往[Release页面](https://gitee.com/idiomeo/gitsod/releases/)下载名为`gitsod.msi`的文件，   
+
+这是一个自动安装程序，下载完成后双击运行，点击确认安装，gitsod将会被自动安装到`C:\Program Files\Gitsod\`目录，     
+（安装目录不让自定义是为了防止小白随便选择文件夹导致目录污染）    
+
+等待安装结束即可打开终端使用gitsod。    
+
   
+
 ### Linux
-打开终端，直接执行以下命令  
+Linux下的安装同样简单  
+打开终端，直接执行以下命令    
 ```bash
 curl -fsSL https://gitee.com/idiomeo/gitsod/raw/master/install/linux.sh | bash  
 ```  
 
-该命令将自动拉取**一键安装脚本**进行gitsod的安装  
+该命令将自动拉取**一键安装脚本**并自动执行进行gitsod的安装  
 
-当脚本执行完毕，此时gitsod就已经被下载并添加为你的系统命令了。  
+当脚本执行完毕，此时gitsod就已经被下载并添加为你的系统命令了。    
 
-
-### Windows
-
-在Windows下，安装并不是很复杂，只是步骤有点多，点击[Windows下的安装教程](./Windows下如何安装.md)，跟着教程慢慢来。   
 
 
 ## 2. 初始化

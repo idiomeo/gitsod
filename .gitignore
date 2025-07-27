@@ -25,4 +25,5 @@ gitsod
 !install/bin/*.exe
 !install/bin/gitsod
 !install/bin/*.msi
+*.bak
 
