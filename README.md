@@ -1,4 +1,4 @@
-# gitsod — GitHub 加速小工具
+# Gitsod — GitHub 加速小工具
 
 > 一个帮你一键加速GitHub的**克隆、下载** 的命令行小工具(同时还能帮你打开Github镜像站的网址)。   
 
